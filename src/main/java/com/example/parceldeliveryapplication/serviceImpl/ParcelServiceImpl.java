@@ -1,10 +1,12 @@
 package com.example.parceldeliveryapplication.serviceImpl;
 
 import com.example.parceldeliveryapplication.config.Constants;
+import com.example.parceldeliveryapplication.config.LoggerConfig;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 import com.example.parceldeliveryapplication.enums.ParcelCostCalculation;
 import com.example.parceldeliveryapplication.helper.ParcelValidator;
 import com.example.parceldeliveryapplication.service.ParcelService;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class ParcelServiceImpl implements ParcelService {
     @Autowired
     private ParcelValidator validator;
+    @Autowired
+    private Logger logger;
 
     @Override
     public double parcelCostCalculator(ParcelDTO parcel) {
