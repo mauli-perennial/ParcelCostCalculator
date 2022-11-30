@@ -6,5 +6,6 @@ public class Constants {
     public static final double SMALLPARCEL = 1500.0;
     public static final double MEDIUMPARCEL = 2500.0;
     public static final String REJECTPARCEL= "parcel size is too large parcel is rejected";
+    public  static final String  VOUCHER_RESOURCE = "http://localhost:3000/vouchers/";
 }
 

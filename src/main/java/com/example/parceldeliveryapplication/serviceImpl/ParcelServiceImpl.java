@@ -1,14 +1,15 @@
 package com.example.parceldeliveryapplication.serviceImpl;
 
 import com.example.parceldeliveryapplication.config.Constants;
-import com.example.parceldeliveryapplication.config.LoggerConfig;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 import com.example.parceldeliveryapplication.enums.ParcelCostCalculation;
 import com.example.parceldeliveryapplication.helper.ParcelValidator;
+import com.example.parceldeliveryapplication.model.Voucher;
 import com.example.parceldeliveryapplication.service.ParcelService;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class ParcelServiceImpl implements ParcelService {
@@ -16,9 +17,11 @@ public class ParcelServiceImpl implements ParcelService {
     private ParcelValidator validator;
     @Autowired
     private Logger logger;
+    @Autowired
+    private RestTemplate restTemplate;
 
     @Override
-    public double parcelCostCalculator(ParcelDTO parcel) {
+    public double parcelCostCalculator(ParcelDTO parcel, Integer voucher) {
         String parcelType = validator.parcelValidation(parcel);
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
             throw new RuntimeException(Constants.REJECTPARCEL);
@@ -41,6 +44,13 @@ public class ParcelServiceImpl implements ParcelService {
                 cost = ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
                 break;
 
+        }
+
+        Voucher response = restTemplate.getForObject(Constants.VOUCHER_RESOURCE + voucher, Voucher.class);
+        if (response != null) {
+            cost = cost - cost * (response.getDiscount() / 100);
+        } else {
+            throw new RuntimeException("coupon is expired");
         }
         return cost;
 
