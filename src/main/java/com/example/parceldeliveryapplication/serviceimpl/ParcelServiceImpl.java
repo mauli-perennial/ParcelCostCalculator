@@ -37,10 +37,10 @@ public class ParcelServiceImpl implements ParcelService {
             case "FIFTH" -> ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
             default -> throw new InvalidParcelException(Constants.REJECT_PARCEL);
         };
-        Integer discount = getDiscount(voucher);
+       /* Integer discount = getDiscount(voucher);
         if (discount > 0) {
             cost = cost - (cost * (discount / 100));
-        }
+        }*/
         return cost + Constants.CURRENCY;
     }
 
