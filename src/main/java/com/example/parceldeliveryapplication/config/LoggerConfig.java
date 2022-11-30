@@ -6,7 +6,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+/*
+This Class is for logger configuration bean creation which can be used for adding logs.
+ */
 @Configuration
 public class LoggerConfig {
     @Bean

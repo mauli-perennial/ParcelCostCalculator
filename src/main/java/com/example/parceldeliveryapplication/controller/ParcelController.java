@@ -17,8 +17,8 @@ public class ParcelController {
     @Autowired
     private ParcelService parcelService;
 
-    @GetMapping("/cost")
-    public ResponseEntity<Double> parcelDelivery(@RequestParam double weight, @RequestParam double height, @RequestParam double width, @RequestParam double length,@RequestParam Integer voucher) {
+    @GetMapping
+    public ResponseEntity<Double> calculateParcelCost(@RequestParam double weight, @RequestParam double height, @RequestParam double width, @RequestParam double length, @RequestParam Integer voucher) {
         ParcelDTO parcel = new ParcelDTO(Quantities.getQuantity(weight, Units.KILOGRAM), Quantities.getQuantity(height,Units.METRE), Quantities.getQuantity(width,Units.METRE), Quantities.getQuantity(length,Units.METRE));
         return ResponseEntity.ok(parcelService.parcelCostCalculator(parcel,voucher));
     }

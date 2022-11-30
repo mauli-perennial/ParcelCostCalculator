@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 public class ParcelServiceImpl implements ParcelService {
     @Autowired
     private ParcelValidator validator;
+
     @Autowired
     private Logger logger;
     @Autowired
@@ -22,11 +23,14 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public double parcelCostCalculator(ParcelDTO parcel, Integer voucher) {
+
         String parcelType = validator.parcelValidation(parcel);
+        logger.info("parcel type is ------>" + parcelType);
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
             throw new RuntimeException(Constants.REJECTPARCEL);
         }
         double cost = 0;
+
         switch (parcelType) {
             case "FIRST":
                 cost = ParcelCostCalculation.REJECT.calculateCost(parcel);
@@ -46,12 +50,15 @@ public class ParcelServiceImpl implements ParcelService {
 
         }
 
-        Voucher response = restTemplate.getForObject(Constants.VOUCHER_RESOURCE + voucher, Voucher.class);
+       /* Voucher response = restTemplate.getForObject(Constants.VOUCHER_RESOURCE + voucher, Voucher.class);
+
+        logger.info("discount for the applied voucher is ---->" + response.getDiscount());
+
         if (response != null) {
             cost = cost - cost * (response.getDiscount() / 100);
         } else {
             throw new RuntimeException("coupon is expired");
-        }
+        }*/
         return cost;
 
     }

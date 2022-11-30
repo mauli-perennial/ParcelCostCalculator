@@ -1,5 +1,7 @@
 package com.example.parceldeliveryapplication.config;
-
+/*
+This class is used constant creation which can be user across the application.
+ */
 public class Constants {
     public static final double REJECT = 50.0;
     public static final double HEAVYPARCEL = 10.0;

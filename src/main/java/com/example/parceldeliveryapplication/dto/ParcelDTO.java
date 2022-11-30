@@ -17,6 +17,7 @@ public final class ParcelDTO {
         this.length = length;
     }
 
+
     public Quantity<Mass> getWeight() {
         return weight;
     }
