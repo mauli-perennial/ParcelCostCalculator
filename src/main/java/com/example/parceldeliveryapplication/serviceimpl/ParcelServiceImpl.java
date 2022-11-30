@@ -25,7 +25,6 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public String parcelCostCalculator(ParcelDTO parcel, String voucher) {
-
         String parcelType = validator.parcelValidation(parcel);
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
             throw new InvalidParcelException(Constants.REJECT_PARCEL);
@@ -38,13 +37,11 @@ public class ParcelServiceImpl implements ParcelService {
             case "FIFTH" -> ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
             default -> throw new InvalidParcelException(Constants.REJECT_PARCEL);
         };
-
         Integer discount = getDiscount(voucher);
         if (discount > 0) {
             cost = cost - (cost * (discount / 100));
         }
         return cost + Constants.CURRENCY;
-
     }
 
     private Integer getDiscount(String voucher) {
@@ -60,5 +57,4 @@ public class ParcelServiceImpl implements ParcelService {
         }
         return discount;
     }
-
 }
