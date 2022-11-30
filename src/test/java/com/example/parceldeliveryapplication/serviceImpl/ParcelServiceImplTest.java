@@ -24,8 +24,8 @@ class ParcelServiceImplTest {
     @Test
     void parcelCostCalculator() {
         ParcelDTO parcelDTO = new ParcelDTO(Quantities.getQuantity(23, Units.KILOGRAM), Quantities.getQuantity(9, Units.METRE), Quantities.getQuantity(10, Units.METRE), Quantities.getQuantity(10, Units.METRE));
-        double cost = 460.0;
-        Mockito.when(parcelService.parcelCostCalculator(parcelDTO, 7)).thenReturn(cost);
-        assertEquals(cost, parcelService.parcelCostCalculator(parcelDTO, 7));
+        String cost = "460.0PHP";
+        Mockito.when(parcelService.parcelCostCalculator(parcelDTO, "7")).thenReturn(cost);
+        assertEquals(cost, parcelService.parcelCostCalculator(parcelDTO, "7"));
     }
 }

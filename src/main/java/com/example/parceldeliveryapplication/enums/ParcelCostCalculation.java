@@ -5,6 +5,9 @@ import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import com.example.parceldeliveryapplication.helper.ParcelValidator;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 
+/**
+ * enum is for calculating the cost according to priority;
+ */
 public enum ParcelCostCalculation {
     REJECT {
         @Override
