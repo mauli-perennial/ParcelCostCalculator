@@ -3,6 +3,7 @@ package com.example.parceldeliveryapplication.serviceImpl;
 import com.example.parceldeliveryapplication.config.Constants;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 import com.example.parceldeliveryapplication.enums.ParcelCostCalculation;
+import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
 import com.example.parceldeliveryapplication.helper.ParcelValidator;
 import com.example.parceldeliveryapplication.model.Voucher;
@@ -26,9 +27,8 @@ public class ParcelServiceImpl implements ParcelService {
     public String parcelCostCalculator(ParcelDTO parcel, String voucher) {
 
         String parcelType = validator.parcelValidation(parcel);
-        logger.info("parcel type is ------>" + parcelType);
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
-            throw new RuntimeException(Constants.REJECT_PARCEL);
+            throw new InvalidParcelException(Constants.REJECT_PARCEL);
         }
         double cost = 0;
 
@@ -48,6 +48,8 @@ public class ParcelServiceImpl implements ParcelService {
             case "FIFTH":
                 cost = ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
                 break;
+            default:
+                throw new InvalidParcelException(Constants.REJECT_PARCEL);
 
         }
         Integer discount = getDiscount(voucher);
@@ -66,7 +68,6 @@ public class ParcelServiceImpl implements ParcelService {
         } catch (Exception e) {
             throw new InvalidVoucherException(Constants.INVALID_VOUCHER);
         }
-        logger.info("discount for the applied voucher is ---->" + response.getDiscount());
         if (response != null) {
             discount = response.getDiscount();
         }

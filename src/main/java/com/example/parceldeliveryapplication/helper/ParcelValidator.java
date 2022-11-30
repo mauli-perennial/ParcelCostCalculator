@@ -12,9 +12,9 @@ import javax.measure.quantity.Volume;
 
 import static com.example.parceldeliveryapplication.config.Constants.*;
 
-/*
+/**
 This class is for the validation of the parcel provided by the customers according to their weight , length,width,height;
- */
+ **/
 @Component
 public class ParcelValidator {
     /**
@@ -33,7 +33,7 @@ public class ParcelValidator {
 
         String priority = "";
         double volume;
-        if (parcel.getLength().getUnit().equals(Units.METRE) && parcel.getLength().getUnit().equals(Units.METRE) && parcel.getLength().getUnit().equals(Units.METRE)) {
+        if (parcel.getLength().getUnit().equals(Units.METRE) && parcel.getHeight().getUnit().equals(Units.METRE) && parcel.getWidth().getUnit().equals(Units.METRE)) {
             volume = Double.parseDouble(parcelVolume(parcel).toString().substring(0, 6));
         } else {
             throw new InvalidParcelException("units are not proper");
