@@ -16,5 +16,8 @@ public class Constants {
     public static final String CURRENCY= "PHP";
 
     public static final String INVALID_VOUCHER="voucher is invalid";
+
+    private Constants() {
+    }
 }
 

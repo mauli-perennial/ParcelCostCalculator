@@ -1,4 +1,4 @@
-package com.example.parceldeliveryapplication.serviceImpl;
+package com.example.parceldeliveryapplication.serviceimpl;
 
 import com.example.parceldeliveryapplication.config.Constants;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
@@ -30,28 +30,15 @@ public class ParcelServiceImpl implements ParcelService {
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
             throw new InvalidParcelException(Constants.REJECT_PARCEL);
         }
-        double cost = 0;
+        double cost = switch (parcelType) {
+            case "FIRST" -> ParcelCostCalculation.REJECT.calculateCost(parcel);
+            case "SECOND" -> ParcelCostCalculation.HEAVY_PARCEL.calculateCost(parcel);
+            case "THIRD" -> ParcelCostCalculation.SMALL_PARCEL.calculateCost(parcel);
+            case "FOURTH" -> ParcelCostCalculation.MEDIUM_PARCEL.calculateCost(parcel);
+            case "FIFTH" -> ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
+            default -> throw new InvalidParcelException(Constants.REJECT_PARCEL);
+        };
 
-        switch (parcelType) {
-            case "FIRST":
-                cost = ParcelCostCalculation.REJECT.calculateCost(parcel);
-                break;
-            case "SECOND":
-                cost = ParcelCostCalculation.HEAVY_PARCEL.calculateCost(parcel);
-                break;
-            case "THIRD":
-                cost = ParcelCostCalculation.SMALL_PARCEL.calculateCost(parcel);
-                break;
-            case "FOURTH":
-                cost = ParcelCostCalculation.MEDIUM_PARCEL.calculateCost(parcel);
-                break;
-            case "FIFTH":
-                cost = ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
-                break;
-            default:
-                throw new InvalidParcelException(Constants.REJECT_PARCEL);
-
-        }
         Integer discount = getDiscount(voucher);
         if (discount > 0) {
             cost = cost - (cost * (discount / 100));
