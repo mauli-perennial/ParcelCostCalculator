@@ -7,6 +7,15 @@ public enum CostConversionFactors {
     CostConversionFactors(String factor) {
         this.factor = factor;
     }
+
+    public String getFactor() {
+        return factor;
+    }
+
+    @Override
+    public String toString() {
+        return factor;
+    }
 }
 
 

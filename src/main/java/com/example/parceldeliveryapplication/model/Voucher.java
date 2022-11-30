@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Voucher {
-    private Integer id;
+    private String id;
     private Integer discount;
 }

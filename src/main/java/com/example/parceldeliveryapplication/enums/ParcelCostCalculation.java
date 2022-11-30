@@ -1,6 +1,7 @@
 package com.example.parceldeliveryapplication.enums;
 
 import com.example.parceldeliveryapplication.config.Constants;
+import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import com.example.parceldeliveryapplication.helper.ParcelValidator;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 
@@ -9,7 +10,7 @@ public enum ParcelCostCalculation {
         @Override
         public double calculateCost(ParcelDTO dto) {
             if (Double.parseDouble(dto.getWeight().toString().substring(0, 5)) > Constants.REJECT) {
-                throw new RuntimeException(Constants.REJECTPARCEL);
+                throw new InvalidParcelException(Constants.REJECT_PARCEL);
             }
             return 0.0;
 
@@ -23,8 +24,6 @@ public enum ParcelCostCalculation {
     }, LARGE_PARCEL {
         @Override
         public double calculateCost(ParcelDTO dto) {
-            System.out.println(" volume is --->"+ ParcelValidator.parcelVolume(dto).toString().substring(0,6));
-            System.out.println("factor is---->" +Double.parseDouble(CostConversionFactors.LARGE.factor.toString()));
             return (Double.parseDouble(ParcelValidator.parcelVolume(dto).toString().substring(0,6))) * Double.parseDouble(CostConversionFactors.LARGE.factor);
 
         }

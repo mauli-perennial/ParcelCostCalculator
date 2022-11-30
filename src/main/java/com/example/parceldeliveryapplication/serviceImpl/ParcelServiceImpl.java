@@ -3,6 +3,7 @@ package com.example.parceldeliveryapplication.serviceImpl;
 import com.example.parceldeliveryapplication.config.Constants;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 import com.example.parceldeliveryapplication.enums.ParcelCostCalculation;
+import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
 import com.example.parceldeliveryapplication.helper.ParcelValidator;
 import com.example.parceldeliveryapplication.model.Voucher;
 import com.example.parceldeliveryapplication.service.ParcelService;
@@ -22,12 +23,12 @@ public class ParcelServiceImpl implements ParcelService {
     private RestTemplate restTemplate;
 
     @Override
-    public double parcelCostCalculator(ParcelDTO parcel, Integer voucher) {
+    public String parcelCostCalculator(ParcelDTO parcel, String voucher) {
 
         String parcelType = validator.parcelValidation(parcel);
         logger.info("parcel type is ------>" + parcelType);
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
-            throw new RuntimeException(Constants.REJECTPARCEL);
+            throw new RuntimeException(Constants.REJECT_PARCEL);
         }
         double cost = 0;
 
@@ -49,18 +50,27 @@ public class ParcelServiceImpl implements ParcelService {
                 break;
 
         }
+        Integer discount = getDiscount(voucher);
+        if (discount > 0) {
+            cost = cost - (cost * (discount / 100));
+        }
+        return cost + Constants.CURRENCY;
 
-       /* Voucher response = restTemplate.getForObject(Constants.VOUCHER_RESOURCE + voucher, Voucher.class);
+    }
 
+    private Integer getDiscount(String voucher) {
+        Voucher response;
+        Integer discount = 0;
+        try {
+            response = restTemplate.getForObject(Constants.VOUCHER_RESOURCE + voucher, Voucher.class);
+        } catch (Exception e) {
+            throw new InvalidVoucherException(Constants.INVALID_VOUCHER);
+        }
         logger.info("discount for the applied voucher is ---->" + response.getDiscount());
-
         if (response != null) {
-            cost = cost - cost * (response.getDiscount() / 100);
-        } else {
-            throw new RuntimeException("coupon is expired");
-        }*/
-        return cost;
-
+            discount = response.getDiscount();
+        }
+        return discount;
     }
 
 }

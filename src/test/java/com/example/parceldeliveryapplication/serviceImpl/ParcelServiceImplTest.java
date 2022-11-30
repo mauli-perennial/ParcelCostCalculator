@@ -18,9 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @WebMvcTest(value = ParcelServiceImpl.class)
 class ParcelServiceImplTest {
 
-    @Autowired
-    private MockMvc mock;
-
     @MockBean
     private ParcelServiceImpl parcelService;
 
