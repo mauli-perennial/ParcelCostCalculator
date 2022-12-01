@@ -26,7 +26,7 @@ class ParcelValidatorTest {
 
     @Test
     void parcelValidation() {
-        ParcelDTO parcelDTO = new ParcelDTO(Quantities.getQuantity(2, Units.KILOGRAM), Quantities.getQuantity(9, Units.METRE), Quantities.getQuantity(10, Units.METRE), Quantities.getQuantity(10, Units.METRE));
+        ParcelDTO parcelDTO = new ParcelDTO(2,9,10,10);
         String parcelType = "THIRD";
         Mockito.when(parcelValidator.parcelValidation(parcelDTO)).thenReturn(parcelType);
         assertEquals(parcelType, parcelValidator.parcelValidation(parcelDTO));

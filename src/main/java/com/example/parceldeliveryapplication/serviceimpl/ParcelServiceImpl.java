@@ -24,13 +24,12 @@ public class ParcelServiceImpl implements ParcelService {
     private RestTemplate restTemplate;
 
     /**
-     *
-     * @param parcel parcel object and voucher code is input;
+     * @param parcel  parcel object and voucher code is input;
      * @param voucher
      * @return return the
      */
     @Override
-    public String parcelCostCalculator(ParcelDTO parcel, String voucher) {
+    public double parcelCostCalculator(ParcelDTO parcel, String voucher) {
         String parcelType = validator.parcelValidation(parcel);
         if (parcelType.equalsIgnoreCase(ParcelCostCalculation.REJECT.toString())) {
             throw new InvalidParcelException(Constants.REJECT_PARCEL);
@@ -43,15 +42,17 @@ public class ParcelServiceImpl implements ParcelService {
             case "FIFTH" -> ParcelCostCalculation.LARGE_PARCEL.calculateCost(parcel);
             default -> throw new InvalidParcelException(Constants.REJECT_PARCEL);
         };
+
        /* Integer discount = getDiscount(voucher);
         if (discount > 0) {
-            cost = cost - (cost * (discount / 100));
+            cost = cost - (cost * (double)(discount / 100));
         }*/
-        return cost + Constants.CURRENCY;
+        return cost;
     }
 
     /**
      * This method is used for the getting discount for voucher code from external service
+     *
      * @param voucher voucher code is provided
      * @return discount for voucher
      */

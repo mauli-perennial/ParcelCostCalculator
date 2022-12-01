@@ -8,10 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tec.units.ri.quantity.Quantities;
-import tec.units.ri.unit.Units;
-
-import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/parcel")
@@ -20,7 +16,7 @@ public class ParcelController {
     private ParcelService parcelService;
 
     @GetMapping
-    public ResponseEntity<String > calculateParcelCost(@RequestParam double weight, @RequestParam double height, @RequestParam double width, @RequestParam double length, @RequestParam String voucher) {
+    public ResponseEntity<Double> calculateParcelCost(@RequestParam double weight, @RequestParam double height, @RequestParam double width, @RequestParam double length, @RequestParam String voucher) {
         ParcelDTO parcel = new ParcelDTO(weight, height, width, length);
         return ResponseEntity.ok(parcelService.parcelCostCalculator(parcel,voucher));
     }

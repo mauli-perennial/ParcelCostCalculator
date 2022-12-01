@@ -13,7 +13,7 @@ import tec.units.ri.unit.Units;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(value = ParcelServiceImpl.class)
+@WebMvcTest(value = ParcelServiceImplTest.class)
 class ParcelServiceImplTest {
 
     @MockBean
@@ -21,8 +21,8 @@ class ParcelServiceImplTest {
 
     @Test
     void parcelCostCalculator() {
-        ParcelDTO parcelDTO = new ParcelDTO(Quantities.getQuantity(23, Units.KILOGRAM), Quantities.getQuantity(9, Units.METRE), Quantities.getQuantity(10, Units.METRE), Quantities.getQuantity(10, Units.METRE));
-        String cost = "460.0PHP";
+        ParcelDTO parcelDTO = new ParcelDTO(23,9, 10,10);
+        double cost = 460.0;
         Mockito.when(parcelService.parcelCostCalculator(parcelDTO, "7")).thenReturn(cost);
         assertEquals(cost, parcelService.parcelCostCalculator(parcelDTO, "7"));
     }
