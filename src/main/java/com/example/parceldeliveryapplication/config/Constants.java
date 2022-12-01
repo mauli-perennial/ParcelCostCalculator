@@ -1,5 +1,7 @@
 package com.example.parceldeliveryapplication.config;
 
+import java.math.BigDecimal;
+
 /*
 This class is used constant creation which can be user across the application.
  */

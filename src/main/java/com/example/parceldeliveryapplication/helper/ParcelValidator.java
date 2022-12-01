@@ -21,8 +21,8 @@ public class ParcelValidator {
      * @param parcel which is the object for the parcel with all fields required for that .
      * @return it returns the volume of the parcel .
      */
-    public static Quantity<Volume> parcelVolume(ParcelDTO parcel) {
-        return (Quantity<Volume>) parcel.getHeight().multiply(parcel.getWidth()).multiply(parcel.getLength());
+    public static double parcelVolume(ParcelDTO parcel) {
+        return  parcel.getHeight() * parcel.getLength() * parcel.getWidth();
     }
 
     /**
@@ -33,14 +33,14 @@ public class ParcelValidator {
 
         String priority = "";
         double volume;
-        if (parcel.getLength().getUnit().equals(Units.METRE) && parcel.getHeight().getUnit().equals(Units.METRE) && parcel.getWidth().getUnit().equals(Units.METRE)) {
-            volume = Double.parseDouble(parcelVolume(parcel).toString().substring(0, 6));
+        if (parcel.getLength()>0 && parcel.getHeight()>0 && parcel.getWidth()>0) {
+            volume = parcelVolume(parcel);
         } else {
             throw new InvalidParcelException("units are not proper");
         }
         try {
-            double weight = Double.parseDouble(parcel.getWeight().toString().substring(0, 4));
-            if (parcel.getWeight().getUnit().equals(Units.KILOGRAM) && weight >= REJECT) {
+            double weight = parcel.getWeight();
+            if (weight >= REJECT) {
                 priority = ParcelPriority.FIRST.toString();
             } else if (weight > HEAVY_PARCEL && weight <= REJECT) {
                 priority = ParcelPriority.SECOND.toString();

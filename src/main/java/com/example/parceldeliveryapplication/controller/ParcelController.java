@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import tec.units.ri.quantity.Quantities;
 import tec.units.ri.unit.Units;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/parcel")
 public class ParcelController {
@@ -19,7 +21,7 @@ public class ParcelController {
 
     @GetMapping
     public ResponseEntity<String > calculateParcelCost(@RequestParam double weight, @RequestParam double height, @RequestParam double width, @RequestParam double length, @RequestParam String voucher) {
-        ParcelDTO parcel = new ParcelDTO(Quantities.getQuantity(weight, Units.KILOGRAM), Quantities.getQuantity(height,Units.METRE), Quantities.getQuantity(width,Units.METRE), Quantities.getQuantity(length,Units.METRE));
+        ParcelDTO parcel = new ParcelDTO(weight, height, width, length);
         return ResponseEntity.ok(parcelService.parcelCostCalculator(parcel,voucher));
     }
 }

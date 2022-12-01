@@ -23,6 +23,12 @@ public class ParcelServiceImpl implements ParcelService {
     @Autowired
     private RestTemplate restTemplate;
 
+    /**
+     *
+     * @param parcel parcel object and voucher code is input;
+     * @param voucher
+     * @return return the
+     */
     @Override
     public String parcelCostCalculator(ParcelDTO parcel, String voucher) {
         String parcelType = validator.parcelValidation(parcel);
@@ -44,6 +50,11 @@ public class ParcelServiceImpl implements ParcelService {
         return cost + Constants.CURRENCY;
     }
 
+    /**
+     * This method is used for the getting discount for voucher code from external service
+     * @param voucher voucher code is provided
+     * @return discount for voucher
+     */
     private Integer getDiscount(String voucher) {
         Voucher response;
         Integer discount = 0;
