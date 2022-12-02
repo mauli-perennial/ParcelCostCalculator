@@ -12,8 +12,18 @@ Exception across the application will be handled by this class.
  */
 @ControllerAdvice
 public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<?> handleRuntimeException(RuntimeException e) {
+    /**
+     *
+     * @param e This will be the object of the exception occurred at the run time;
+     * @return
+     */
+    @ExceptionHandler(InvalidParcelException.class)
+    public ResponseEntity<?> handleRuntimeException(InvalidParcelException e) {
+        ErrorResponse resp = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+    }
+    @ExceptionHandler(InvalidVoucherException.class)
+    public ResponseEntity<?> handleRuntimeException(InvalidVoucherException e) {
         ErrorResponse resp = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
