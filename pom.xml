@@ -33,31 +33,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.measure</groupId>
-            <artifactId>unit-api</artifactId>
-            <version>2.0</version>
-        </dependency>
-        <dependency>
-            <groupId>tec.units</groupId>
-            <artifactId>unit-ri</artifactId>
-            <version>1.0.3</version>
-        </dependency>
-        <dependency>
-            <groupId>systems.uom</groupId>
-            <artifactId>systems-unicode</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>systems.uom</groupId>
-            <artifactId>systems-common</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
-            <groupId>systems.uom</groupId>
-            <artifactId>systems-quantity</artifactId>
-            <version>2.0.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
@@ -81,13 +56,6 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.junit.platform</groupId>
-            <artifactId>junit-platform-launcher</artifactId>
-            <version>1.9.1</version>
             <scope>test</scope>
         </dependency>
 

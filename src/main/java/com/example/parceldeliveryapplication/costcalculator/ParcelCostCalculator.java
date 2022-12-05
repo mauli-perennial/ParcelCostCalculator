@@ -2,7 +2,6 @@ package com.example.parceldeliveryapplication.costcalculator;
 
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 import com.example.parceldeliveryapplication.enums.ParcelCostCalculation;
-import com.example.parceldeliveryapplication.enums.ParcelPriority;
 import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

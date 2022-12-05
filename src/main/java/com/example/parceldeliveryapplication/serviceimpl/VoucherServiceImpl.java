@@ -19,14 +19,13 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class VoucherServiceImpl implements VoucherService {
-
     /*
     This is for the calling the another service which is running on another server
      */
 
-
     @Autowired
     private WebClient webClient;
+
     @Value("${API_KEY}")
     private String apiKey;
 

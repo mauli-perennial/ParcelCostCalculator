@@ -31,7 +31,7 @@ class VoucherServiceImplTest {
         ReflectionTestUtils.setField(voucherService,"invalidVoucher","voucher is invalid");
     }
 
-    /*@Test
+    @Test
     void getDiscount() throws ParseException {
         String date = "2020-09-16";
         String voucher = "MYNT";
@@ -40,5 +40,5 @@ class VoucherServiceImplTest {
         Voucher vouchers = new Voucher(voucher,discount,format.parse(date));
         Mockito.when(webClient.get().uri(Mockito.anyString(),Mockito.anyString()).retrieve().onStatus(HttpStatus::isError, clientResponse -> Mono.error(new InvalidVoucherException(Mockito.anyString()))).bodyToMono(Voucher.class).block()).thenReturn(vouchers);
         assertEquals(discount,voucherService.getDiscount(voucher));
-    }*/
+    }
 }
