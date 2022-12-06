@@ -17,7 +17,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return It returns the exception message whenever exception occurs .
      */
     @ExceptionHandler(InvalidParcelException.class)
-    public ResponseEntity<?> handleRuntimeException(InvalidParcelException e) {
+    public ResponseEntity<ErrorResponse> handleRuntimeException(InvalidParcelException e) {
         ErrorResponse resp = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      * @return It returns the exception message whenever exception occurs .
      */
     @ExceptionHandler(InvalidVoucherException.class)
-    public ResponseEntity<?> handleRuntimeException(InvalidVoucherException e) {
+    public ResponseEntity<ErrorResponse> handleRuntimeException(InvalidVoucherException e) {
         ErrorResponse resp = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
