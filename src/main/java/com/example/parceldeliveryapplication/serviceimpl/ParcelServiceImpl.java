@@ -3,11 +3,14 @@ package com.example.parceldeliveryapplication.serviceimpl;
 import com.example.parceldeliveryapplication.costcalculator.ParcelCostCalculator;
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
 import com.example.parceldeliveryapplication.enums.ParcelPriority;
+import com.example.parceldeliveryapplication.exceptions.BadVoucherException;
+import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import com.example.parceldeliveryapplication.helper.ParcelPriorityCheck;
 import com.example.parceldeliveryapplication.service.ParcelService;
 import com.example.parceldeliveryapplication.service.VoucherService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -30,6 +33,12 @@ public class ParcelServiceImpl implements ParcelService {
     @Autowired
     private ParcelCostCalculator parcelCostCalculator;
 
+    @Value("${invalid.voucher}")
+    private String invalidVoucher;
+
+    @Value("${REJECT_PARCEL}")
+    private String rejectParcel;
+
     /**
      * @param parcel  parcel object and voucher code is input;
      * @param voucher This is coupon code provided for the service to get discount for which we are using the external service
@@ -40,13 +49,22 @@ public class ParcelServiceImpl implements ParcelService {
         log.info("In Parcel service ----->");
         double cost = 0;
         ParcelPriority parcelType = parcelPriority.parcelPriority(parcel);
-        log.info(String.format(" Parcel Type is---->" + parcelType));
-        log.info("Cost Calculation Started for Parcel--->");
-        cost = parcelCostCalculator.getParcelCost(parcelType.toString(), parcel);
+        try {
+            log.info("Cost Calculation Started for Parcel--->");
+            cost = parcelCostCalculator.getParcelCost(parcelType.toString(), parcel);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new InvalidParcelException(rejectParcel);
+        }
         log.info("cost calculation done for the parcel--->");
         double discount = 0;
-        if (!voucher.isEmpty() && !voucher.isBlank()) {
-            discount = voucherService.getDiscount(voucher);
+        try {
+            if (!voucher.isEmpty() && !voucher.isBlank()) {
+                discount = voucherService.getDiscount(voucher);
+            }
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            throw new BadVoucherException(invalidVoucher);
         }
         log.info(" response got from the voucher service");
         if (discount > 0) {
@@ -54,4 +72,6 @@ public class ParcelServiceImpl implements ParcelService {
         }
         return cost;
     }
+
+
 }

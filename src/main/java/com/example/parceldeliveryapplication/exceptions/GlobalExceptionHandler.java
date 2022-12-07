@@ -31,4 +31,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ErrorResponse resp = new ErrorResponse(e.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
     }
+
+    /**
+     * @param e This will be the object of the exception occurred at the run time;
+     * @return It returns the exception message whenever exception occurs .
+     */
+    @ExceptionHandler(BadVoucherException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(BadVoucherException e) {
+        ErrorResponse resp = new ErrorResponse(e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(resp);
+    }
 }

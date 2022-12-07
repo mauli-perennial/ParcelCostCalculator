@@ -1,10 +1,8 @@
 package com.example.parceldeliveryapplication.controller;
 
 import com.example.parceldeliveryapplication.dto.ParcelDTO;
-import com.example.parceldeliveryapplication.helper.ParcelPriorityCheck;
 import com.example.parceldeliveryapplication.service.ParcelService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +26,8 @@ public class ParcelController {
     @PostMapping("/cost")
     public ResponseEntity<?> calculateParcelCost(@RequestBody(required = true) ParcelDTO parcel, @RequestParam(required = false, defaultValue = "") String voucher) {
         log.info("In controller for the parcel---->");
-        String cost = String.valueOf(parcelService.parcelCostCalculator(parcel, voucher));
+        ParcelDTO parcelDto = new ParcelDTO(parcel.getWeight(),parcel.getHeight(),parcel.getWidth(),parcel.getLength());
+        String cost = String.valueOf(parcelService.parcelCostCalculator(parcelDto, voucher));
         return ResponseEntity.ok(cost);
     }
 }

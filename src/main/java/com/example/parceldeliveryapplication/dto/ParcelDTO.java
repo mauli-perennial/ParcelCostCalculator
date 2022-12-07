@@ -1,10 +1,35 @@
 package com.example.parceldeliveryapplication.dto;
 
+import com.example.parceldeliveryapplication.config.Constants;
+
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Positive;
+
+
 public class ParcelDTO {
-    private final double weight;
-    private final double height;
-    private final double width;
-    private final double length;
+    /**
+     * This is the mandatory field which will be required while initializing the object of the parcel.
+     */
+    @Positive(message = Constants.POSITIVE_WEIGHT_ATTRIBUTE_NEEDED)
+    @Max(value = 50,message = "weight should not be grater than 50")
+    @Pattern(regexp = "[0-9]{1,13}(\\.[0-9]*)?",message = "Weight should not be In String")
+    private  Double weight;
+    /**
+     * This is the mandatory field which will be required while initializing the object of the parcel.
+     */
+    @Positive(message = Constants.POSITIVE_HEIGHT_ATTRIBUTE_NEEDED)
+    private  Double height;
+    /**
+     * This is the mandatory field which will be required while initializing the object of the parcel.
+     */
+    @Positive(message = Constants.POSITIVE_WIDTH_ATTRIBUTE_NEEDED)
+    private  Double width;
+    /**
+     * This is the mandatory field which will be required while initializing the object of the parcel.
+     */
+    @Positive(message = Constants.POSITIVE_LENGTH_ATTRIBUTE_NEEDED)
+    private Double length;
 
     public ParcelDTO(double weight, double height, double width, double length) {
         this.weight = weight;
@@ -14,19 +39,19 @@ public class ParcelDTO {
     }
 
 
-    public double getWeight() {
+    public Double getWeight() {
         return weight;
     }
 
-    public double getHeight() {
+    public Double getHeight() {
         return height;
     }
 
-    public double getWidth() {
+    public Double getWidth() {
         return width;
     }
 
-    public double getLength() {
+    public Double getLength() {
         return length;
     }
 }
