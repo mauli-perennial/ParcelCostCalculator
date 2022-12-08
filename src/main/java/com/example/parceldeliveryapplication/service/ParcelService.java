@@ -1,7 +1,8 @@
 package com.example.parceldeliveryapplication.service;
 
-import com.example.parceldeliveryapplication.dto.ParcelDTO;
+import com.example.parceldeliveryapplication.model.Parcel;
 
 public interface ParcelService {
-    double parcelCostCalculator(ParcelDTO parcel,String voucher);
+    double parcelCostCalculator(Parcel parcel, String voucher);
+    double getDiscountOnVoucher(String voucher);
 }

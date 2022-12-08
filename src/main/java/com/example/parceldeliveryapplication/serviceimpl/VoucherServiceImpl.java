@@ -3,13 +3,11 @@ package com.example.parceldeliveryapplication.serviceimpl;
 import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
 import com.example.parceldeliveryapplication.model.Voucher;
 import com.example.parceldeliveryapplication.service.VoucherService;
-import io.netty.resolver.dns.DnsNameResolverException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -41,6 +39,7 @@ public class VoucherServiceImpl implements VoucherService {
      * @param voucher voucher code is provided
      * @return discount for voucher according the voucher code provided ;
      */
+    @Override
     public double getDiscount(String voucher) {
         log.info("In Voucher service for the parcel discount ");
         double discount = 0;
@@ -48,17 +47,12 @@ public class VoucherServiceImpl implements VoucherService {
             Voucher vouchers = webClient.get().uri(voucher + apiKey).retrieve().onStatus(HttpStatus::isError, clientResponse -> Mono.error(new InvalidVoucherException(invalidVoucher))).bodyToMono(Voucher.class).block();
             if (vouchers != null && Objects.requireNonNull(vouchers).getDiscount() > 0) {
                 discount = vouchers.getDiscount();
+                log.debug(" discount is ----> "+ discount);
             }
             return discount;
-        } catch (NullPointerException e) {
-            log.info("Null pointer exception In voucher Service" + e.getMessage());
-            e.printStackTrace();
-        } catch (ResourceAccessException e) {
-            log.info("Resource Exception pointer exception In voucher Service" + e.getMessage());
-            e.printStackTrace();
-        } catch (DnsNameResolverException e) {
-            log.info("Dns name resolver pointer exception In voucher Service" + e.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw new InvalidVoucherException(invalidVoucher);
         }
-        return discount;
     }
 }
