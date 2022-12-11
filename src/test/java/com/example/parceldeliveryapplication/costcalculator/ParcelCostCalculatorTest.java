@@ -24,9 +24,9 @@ class ParcelCostCalculatorTest {
 
     @Test
     void getParcelCost() {
-        Parcel parcelDTO = new Parcel(10, 10, 10, 10);
-        String priority = "THIRD";
-        assertEquals(30.0D, parcelCostCalculator.getParcelCost(priority, parcelDTO));
+        Parcel parcelDTO = new Parcel(22, 10, 10, 10);
+        String priority = "SECOND";
+        assertEquals(407.0D, parcelCostCalculator.getParcelCost(priority, parcelDTO));
     }
 
     @Test

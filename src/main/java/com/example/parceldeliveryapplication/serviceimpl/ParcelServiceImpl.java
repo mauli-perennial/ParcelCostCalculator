@@ -65,6 +65,7 @@ public class ParcelServiceImpl implements ParcelService {
         try {
             for (ParcelPriority priority : ParcelPriority.values()) {
                 if (!Objects.equals(priority.getPriority(parcelDto), "")) {
+                    log.info("Parcel priority is---"+priority);
                     cost = parcelCostCalculator.getParcelCost(priority.toString(), parcel);
                     break;
                 }
@@ -89,7 +90,7 @@ public class ParcelServiceImpl implements ParcelService {
         log.info("Calling voucher service---->");
         double discount = 0;
         try {
-            if (!voucher.isEmpty() && !voucher.isBlank()) {
+            if (!voucher.isEmpty() && voucher != "") {
                 discount = voucherService.getDiscount(voucher);
             }
         } catch (Exception e) {

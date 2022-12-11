@@ -29,7 +29,7 @@ public enum ParcelPriority {
     }, THIRD {
         @Override
         public String getPriority(ParcelDto parcelDto) {
-            if (parcelDto.getVolume() <= parcelDto.getSmallParcel()) {
+            if (parcelDto.getVolume() < parcelDto.getSmallParcel()) {
                 return ParcelPriority.THIRD.toString();
             } else {
                 return "";
@@ -38,7 +38,7 @@ public enum ParcelPriority {
     }, FOURTH {
         @Override
         public String getPriority(ParcelDto parcelDto) {
-            if (parcelDto.getVolume() > parcelDto.getHeavyParcel() && parcelDto.getVolume() <= parcelDto.getMediumParcel()) {
+            if (parcelDto.getVolume() >= parcelDto.getHeavyParcel() && parcelDto.getVolume() < parcelDto.getMediumParcel()) {
                 return ParcelPriority.FOURTH.toString();
             } else {
                 return "";
@@ -47,7 +47,7 @@ public enum ParcelPriority {
     }, FIFTH {
         @Override
         public String getPriority(ParcelDto parcelDto) {
-            if (parcelDto.getVolume() > parcelDto.getMediumParcel()) {
+            if (parcelDto.getVolume() >= parcelDto.getMediumParcel()) {
                 return ParcelPriority.FIFTH.toString();
             } else {
                 return "";
