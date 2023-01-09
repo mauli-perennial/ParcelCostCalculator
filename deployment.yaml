@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes resource kind we are creating
+metadata:
+  name: parcel-delivery
+  labels:
+    app: spring-boot
+spec:
+  replicas: 1 # Number of replicas that will be created for this deployment
+  selector:
+    matchLabels:
+      app: spring-boot
+  template:
+    metadata:
+      labels:
+        app: spring-boot
+    spec:
+      containers:
+        - name: parcel-delivery
+          image: maulisatav/parcel-shipping:1.5
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 9090

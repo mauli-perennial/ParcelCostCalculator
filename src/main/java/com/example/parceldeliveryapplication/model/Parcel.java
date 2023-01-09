@@ -1,7 +1,5 @@
 package com.example.parceldeliveryapplication.model;
 
-import com.example.parceldeliveryapplication.config.Constants;
-
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Positive;
 
@@ -13,19 +11,27 @@ public class Parcel {
     /**
      * This is the mandatory field which will be required while initializing the object of the parcel.
      */
-    private  Double weight;
+    @Max(value = 50, message = "Parcel weight should not be greater than 50")
+    @Positive(message = "Weight should be positive")
+    private Double weight;
     /**
      * This is the mandatory field which will be required while initializing the object of the parcel.
      */
-    private  Double height;
+    @Positive(message = "Height should be positive")
+    private Double height;
     /**
      * This is the mandatory field which will be required while initializing the object of the parcel.
      */
-    private  Double width;
+    @Positive(message = "Width should be positive")
+    private Double width;
     /**
      * This is the mandatory field which will be required while initializing the object of the parcel.
      */
-    private Double length;
+    @Positive(message = "Length should be positive")
+    private  Double length;
+
+    public Parcel() {
+    }
 
     public Parcel(double weight, double height, double width, double length) {
         this.weight = weight;
@@ -50,7 +56,8 @@ public class Parcel {
     public Double getLength() {
         return length;
     }
-    public double parcelVolume(){
-        return width*height*length;
+
+    public double parcelVolume() {
+        return width * height * length;
     }
 }

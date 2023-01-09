@@ -90,7 +90,7 @@ public class ParcelServiceImpl implements ParcelService {
         log.info("Calling voucher service---->");
         double discount = 0;
         try {
-            if (!voucher.isEmpty() && voucher != "") {
+            if (!voucher.isEmpty() && !"".equals(voucher)) {
                 discount = voucherService.getDiscount(voucher);
             }
         } catch (Exception e) {

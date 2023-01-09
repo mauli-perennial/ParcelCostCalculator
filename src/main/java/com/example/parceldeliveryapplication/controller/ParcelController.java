@@ -2,6 +2,7 @@ package com.example.parceldeliveryapplication.controller;
 
 import com.example.parceldeliveryapplication.model.Parcel;
 import com.example.parceldeliveryapplication.service.ParcelService;
+import io.micrometer.core.annotation.Timed;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class ParcelController {
      * This method returns us calculation cost  of the parcel according to priority of the parcel or will give proper error message to user if he enters invalid data
      */
     @PostMapping("/cost")
+    @Timed(value = "cost.time", description = "Time taken to return cost")
     public ResponseEntity<?> calculateParcelCost(@Valid @RequestBody(required = true) Parcel parcel, @RequestParam(required = false, defaultValue = "") String voucher) {
         log.info("In controller for the parcel---->");
         String cost = String.valueOf(parcelService.parcelCostCalculator(parcel, voucher));

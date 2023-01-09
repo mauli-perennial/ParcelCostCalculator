@@ -31,9 +31,8 @@ public class ParcelCostCalculator {
     private String rejectParcel;
 
     /**
-     *
      * @param priority parcel priority is input to method which is used to call specific method to calculate the cost
-     * @param parcel parcel is the input which is used for calculating the cost of the parcel
+     * @param parcel   parcel is the input which is used for calculating the cost of the parcel
      * @return this method return the cost of the parcel
      */
     public double getParcelCost(String priority, Parcel parcel) {
