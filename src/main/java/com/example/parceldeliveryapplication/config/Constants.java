@@ -13,6 +13,10 @@ public class Constants {
     public static double MEDIUM_FACTOR;
     public static double HEAVY_FACTOR;
 
+    public static String REJECT_PARCEL = "Parcel size is too large or low, Hence parcel is rejected";
+
+    public static String INVALID_VOUCHER = " Provided Voucher is Invalid";
+
     @Value("${factor.small}")
     public void setSmallFactor(final double propertyName) {
         SMALL_FACTOR = propertyName;

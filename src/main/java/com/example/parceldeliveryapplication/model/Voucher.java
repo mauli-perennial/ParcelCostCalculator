@@ -25,4 +25,8 @@ public class Voucher {
     public double getDiscount() {
         return discount;
     }
+
+    public Date getExpiry() {
+        return expiry;
+    }
 }

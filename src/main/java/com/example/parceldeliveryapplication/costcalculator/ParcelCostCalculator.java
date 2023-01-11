@@ -1,8 +1,10 @@
 package com.example.parceldeliveryapplication.costcalculator;
 
+import com.example.parceldeliveryapplication.config.Constants;
 import com.example.parceldeliveryapplication.model.Parcel;
 import com.example.parceldeliveryapplication.enums.ParcelCostRuleType;
 import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +16,7 @@ import java.util.Map;
  * Command Pattern implementation for calculating cost of the parcel.
  */
 @Component
+@Slf4j
 public class ParcelCostCalculator {
     private static final Map<String, CostCalculator> COSTS;
 
@@ -27,9 +30,6 @@ public class ParcelCostCalculator {
         COSTS = Collections.unmodifiableMap(costs);
     }
 
-    @Value("${REJECT_PARCEL}")
-    private String rejectParcel;
-
     /**
      * @param priority parcel priority is input to method which is used to call specific method to calculate the cost
      * @param parcel   parcel is the input which is used for calculating the cost of the parcel
@@ -37,15 +37,18 @@ public class ParcelCostCalculator {
      */
     public double getParcelCost(String priority, Parcel parcel) {
         double cost = 0;
+        log.info("Request processing for calculation started for parcel with priority--->" + priority);
         CostCalculator command = COSTS.get(priority);
         if (command == null) {
             throw new IllegalArgumentException("Invalid parcel type type: " + priority);
         }
         if (!priority.equalsIgnoreCase("FIRST")) {
             cost = command.getCost(parcel);
+            log.debug("Cost for the requested parcel with  " + priority + "is " + cost);
 
         } else {
-            throw new InvalidParcelException(rejectParcel);
+            log.error("Request processing for calculating the cost is failed due invalid parcel--->");
+            throw new InvalidParcelException(Constants.REJECT_PARCEL);
         }
         return cost;
     }

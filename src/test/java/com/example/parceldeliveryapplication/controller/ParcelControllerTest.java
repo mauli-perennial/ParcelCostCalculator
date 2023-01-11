@@ -10,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -25,11 +26,11 @@ class ParcelControllerTest {
 
     @Test
     void calculateParcelCost() {
-        double cost = 27.75;
+        Double cost = 27.75D;
         Parcel parcelDTO = new Parcel(10.0D, 10.0D, 10.0D, 10.0D);
         String voucher = "MYNT";
         Mockito.when(parcelService.parcelCostCalculator(parcelDTO, voucher)).thenReturn(cost);
-        assertEquals(String.valueOf(cost), (parcelController.calculateParcelCost(parcelDTO, voucher).getBody()));
+        assertEquals(cost, (parcelController.calculateParcelCost(parcelDTO, voucher).getBody()));
     }
 
     @Test

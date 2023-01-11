@@ -41,8 +41,7 @@ class VoucherServiceImplTest {
     @BeforeEach
     void init() {
         ReflectionTestUtils.setField(voucherService, "apiKey", "?key=apikey");
-        ReflectionTestUtils.setField(voucherService, "invalidVoucher", "voucher is invalid");
-    }
+          }
 
     @Test
     void getDiscount() throws ParseException {

@@ -33,7 +33,7 @@ public class Parcel {
     public Parcel() {
     }
 
-    public Parcel(double weight, double height, double width, double length) {
+    public Parcel(Double weight, Double height, Double width, Double length) {
         this.weight = weight;
         this.height = height;
         this.width = width;
@@ -58,6 +58,6 @@ public class Parcel {
     }
 
     public double parcelVolume() {
-        return width * height * length;
+        return this.width * this.height * this.length;
     }
 }

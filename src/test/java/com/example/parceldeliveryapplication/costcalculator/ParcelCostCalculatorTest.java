@@ -17,21 +17,17 @@ class ParcelCostCalculatorTest {
     @InjectMocks
     ParcelCostCalculator parcelCostCalculator;
 
-    @BeforeEach
-    void init() {
-        ReflectionTestUtils.setField(parcelCostCalculator, "rejectParcel", "parcel size is too large or low, Hence parcel is rejected");
-    }
 
     @Test
     void getParcelCost() {
-        Parcel parcelDTO = new Parcel(22, 10, 10, 10);
+        Parcel parcelDTO = new Parcel(22D, 10D, 10D, 10D);
         String priority = "SECOND";
         assertEquals(0.0D, parcelCostCalculator.getParcelCost(priority, parcelDTO));
     }
 
     @Test
     void getParcelCostWithException() {
-        Parcel parcelDTO = new Parcel(110, 10, 10, 10);
+        Parcel parcelDTO = new Parcel(110D, 10D, 10D, 10D);
         String priority = "FIRST";
         assertThrows(InvalidParcelException.class, () -> parcelCostCalculator.getParcelCost(priority, parcelDTO));
     }

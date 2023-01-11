@@ -1,5 +1,6 @@
 package com.example.parceldeliveryapplication.exceptions;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
@@ -9,6 +10,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,5 +34,11 @@ public class ValidationErrorHandler {
         Map<String, List<String>> errorResponse = new HashMap<>();
         errorResponse.put("errors", errors);
         return errorResponse;
+    }
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<String> handleJsonMappingException(JsonMappingException ex) {
+        return new ResponseEntity<>(ex.getOriginalMessage(), HttpStatus.BAD_REQUEST);
     }
 }
