@@ -58,6 +58,6 @@ public class Parcel {
     }
 
     public double parcelVolume() {
-        return this.width * this.height * this.length;
+        return width * height * length;
     }
 }

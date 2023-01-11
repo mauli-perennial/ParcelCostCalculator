@@ -1,7 +1,5 @@
 package com.example.parceldeliveryapplication.model;
 
-import lombok.Data;
-
 import java.util.Date;
 
 /**

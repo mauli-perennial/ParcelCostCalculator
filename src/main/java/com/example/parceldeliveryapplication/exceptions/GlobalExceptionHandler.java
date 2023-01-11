@@ -1,5 +1,6 @@
 package com.example.parceldeliveryapplication.exceptions;
 
+import io.netty.resolver.dns.DnsNameResolverTimeoutException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +27,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(InvalidVoucherException.class)
     public ResponseEntity<String> handleruntimeException(InvalidVoucherException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+    @ExceptionHandler
+     public ResponseEntity<String> handleruntimeException(DnsNameResolverTimeoutException e){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
 }

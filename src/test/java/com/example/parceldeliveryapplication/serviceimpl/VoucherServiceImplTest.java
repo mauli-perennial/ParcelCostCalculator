@@ -1,7 +1,9 @@
 package com.example.parceldeliveryapplication.serviceimpl;
 
+import com.example.parceldeliveryapplication.exceptions.DnsTimeoutException;
 import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
 import com.example.parceldeliveryapplication.model.Voucher;
+import io.netty.resolver.dns.DnsNameResolverTimeoutException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +22,8 @@ import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class VoucherServiceImplTest {
@@ -47,15 +51,15 @@ class VoucherServiceImplTest {
     void getDiscount() throws ParseException {
         String date = "2020-09-16";
         String voucher = "MYNT";
-        double discount = 12.25D;
+        double discount = 0.0D;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Voucher vouchers = new Voucher(voucher, discount, format.parse(date));
-        Mockito.when(webClient.get()).thenReturn(requestHeadersUriSpecMock);
-        Mockito.when(requestHeadersUriSpecMock.uri(Mockito.anyString())).thenReturn(requestHeadersSpecMock);
-        Mockito.when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
-        Mockito.when(responseSpecMock.onStatus(Mockito.any(Predicate.class), Mockito.any())).thenReturn(responseSpecMock);
-        Mockito.when(responseSpecMock.bodyToMono(ArgumentMatchers.<Class<Voucher>>notNull())).thenReturn(voucherMono);
-        Mockito.when(voucherMono.block()).thenReturn(vouchers);
+        when(webClient.get()).thenReturn(requestHeadersUriSpecMock);
+        when(requestHeadersUriSpecMock.uri(anyString())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
+        when(responseSpecMock.onStatus(Mockito.any(Predicate.class), Mockito.any())).thenReturn(responseSpecMock);
+        when(responseSpecMock.bodyToMono(ArgumentMatchers.<Class<Voucher>>notNull())).thenReturn(voucherMono);
+        when(voucherMono.block()).thenReturn(vouchers);
         assertEquals(discount, voucherService.getDiscount(voucher));
     }
 
@@ -66,13 +70,29 @@ class VoucherServiceImplTest {
         double discount = 12.25D;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Voucher vouchers = new Voucher(voucher, discount, format.parse(date));
-        Mockito.when(webClient.get()).thenReturn(requestHeadersUriSpecMock);
-        Mockito.when(requestHeadersUriSpecMock.uri(Mockito.anyString())).thenReturn(requestHeadersSpecMock);
-        Mockito.when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
-        Mockito.when(responseSpecMock.onStatus(Mockito.any(Predicate.class), Mockito.any())).thenReturn(responseSpecMock);
-        Mockito.when(responseSpecMock.bodyToMono(ArgumentMatchers.<Class<Voucher>>notNull())).thenReturn(voucherMono);
-        Mockito.when(voucherMono.block()).thenThrow(InvalidVoucherException.class);
+        when(webClient.get()).thenReturn(requestHeadersUriSpecMock);
+        when(requestHeadersUriSpecMock.uri(anyString())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersSpecMock.retrieve()).thenReturn(responseSpecMock);
+        when(responseSpecMock.onStatus(Mockito.any(Predicate.class), Mockito.any())).thenReturn(responseSpecMock);
+        when(responseSpecMock.bodyToMono(ArgumentMatchers.<Class<Voucher>>notNull())).thenReturn(voucherMono);
+        when(voucherMono.block()).thenThrow(InvalidVoucherException.class);
         assertThrows(InvalidVoucherException.class, () -> voucherService.getDiscount(voucher));
     }
 
+    @Test
+    void getTimeoutException() throws ParseException {
+        when(webClient.get()).thenReturn(requestHeadersUriSpecMock);
+        when(requestHeadersUriSpecMock.uri(anyString())).thenReturn(requestHeadersSpecMock);
+        when(requestHeadersSpecMock.retrieve()).thenThrow(DnsNameResolverTimeoutException.class);
+        assertThrows(DnsTimeoutException.class,() -> voucherService.getDiscount("adfas"));
+    }
+    @Test
+    void checkExpiry() throws ParseException {
+        String date = "2020-09-16";
+        String voucher = "MYNT";
+        double discount = 12.25D;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Voucher vouchers = new Voucher(voucher, discount, format.parse(date));
+        assertEquals(true ,voucherService.checkExpiry(vouchers) );
+    }
 }

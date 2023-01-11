@@ -1,11 +1,11 @@
-package com.example.parceldeliveryapplication.helper;
+package com.example.parceldeliveryapplication.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ParcelHelper {
+public class ParcelDto {
     private double volume;
     private double weight;
     private double rejectParcel;

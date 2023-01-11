@@ -1,9 +1,11 @@
 package com.example.parceldeliveryapplication.serviceimpl;
 
 import com.example.parceldeliveryapplication.config.Constants;
+import com.example.parceldeliveryapplication.exceptions.DnsTimeoutException;
 import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
 import com.example.parceldeliveryapplication.model.Voucher;
 import com.example.parceldeliveryapplication.service.VoucherService;
+import io.netty.resolver.dns.DnsNameResolverTimeoutException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -48,15 +52,27 @@ public class VoucherServiceImpl implements VoucherService {
                     retrieve().
                     onStatus(HttpStatus::isError, clientResponse -> Mono.error(new InvalidVoucherException(Constants.INVALID_VOUCHER)))
                     .bodyToMono(Voucher.class).block();
-            if (voucher != null && Objects.requireNonNull(voucher).getDiscount() > 0) {
+            if (voucher != null && Objects.requireNonNull(voucher).getDiscount() > 0 &&! checkExpiry(voucher)) {
+                log.info("Discount applied on the voucherCode  " + voucherCode + "Is " + voucher.getDiscount());
                 discount = voucher.getDiscount();
-                log.debug("Discount applied on the voucherCode  " + voucherCode + "Is " + discount);
-                log.debug("Expiry applied on the voucherCode  " + voucherCode + "Is " + voucher.getExpiry());
+
             }
             return discount;
-        } catch (Exception e) {
+        } catch (InvalidVoucherException e) {
             log.error("Request Processing on voucherCode to get discount failed--->");
             throw new InvalidVoucherException(Constants.INVALID_VOUCHER);
+        }catch (DnsNameResolverTimeoutException e){
+            log.error("voucher service is taking to long to get discount");
+            throw new DnsTimeoutException("Timeout exception in voucher service");
         }
+    }
+
+    /**
+     * This method is to check the expiry of the voucher
+     * @param voucher voucher object is provided
+     * @return return true if expired else return false
+     */
+    public boolean checkExpiry(Voucher voucher){
+        return voucher.getExpiry().before(Date.from(Instant.now()));
     }
 }

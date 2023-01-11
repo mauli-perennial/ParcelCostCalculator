@@ -2,7 +2,7 @@ package com.example.parceldeliveryapplication.serviceimpl;
 
 import com.example.parceldeliveryapplication.config.Constants;
 import com.example.parceldeliveryapplication.costcalculator.ParcelCostCalculator;
-import com.example.parceldeliveryapplication.helper.ParcelHelper;
+import com.example.parceldeliveryapplication.dto.ParcelDto;
 import com.example.parceldeliveryapplication.enums.ParcelPriority;
 import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;
-import java.util.concurrent.ConcurrentSkipListMap;
 
 /**
  * This class is for the parcel service implementation which is actully used for calclulation of the parcel cost
@@ -56,7 +55,7 @@ public class ParcelServiceImpl implements ParcelService {
 
         double cost = 0;
 
-        ParcelHelper parcelDto = new ParcelHelper(parcel.parcelVolume(), parcel.getWeight(), rejectParcel, smallParcel, heavyParcel, mediumParcel);
+        ParcelDto parcelDto = new ParcelDto(getVolume(parcel), parcel.getWeight(), rejectParcel, smallParcel, heavyParcel, mediumParcel);
         try {
             for (ParcelPriority priority : ParcelPriority.values()) {
                 if (!Objects.equals(priority.getPriority(parcelDto), "")) {
@@ -93,5 +92,10 @@ public class ParcelServiceImpl implements ParcelService {
         }
         log.info(" Request Processing Done to get discount--->");
         return discount;
+    }
+
+    @Override
+    public double getVolume(Parcel parcel) {
+        return parcel.getLength()*parcel.getWidth()*parcel.getHeight();
     }
 }

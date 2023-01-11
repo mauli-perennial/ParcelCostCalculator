@@ -1,6 +1,6 @@
 package com.example.parceldeliveryapplication.enums;
 
-import com.example.parceldeliveryapplication.helper.ParcelHelper;
+import com.example.parceldeliveryapplication.dto.ParcelDto;
 
 /**
  * enum is for the deciding the priority of the parcel.
@@ -8,7 +8,7 @@ import com.example.parceldeliveryapplication.helper.ParcelHelper;
 public enum ParcelPriority {
     FIRST {
         @Override
-        public String getPriority(ParcelHelper parcelDto) {
+        public String getPriority(ParcelDto parcelDto) {
             if ((parcelDto.getWeight() > parcelDto.getRejectParcel()) || parcelDto.getVolume() == 0 || parcelDto.getWeight() == 0) {
                 return ParcelPriority.FIRST.toString();
             } else {
@@ -18,7 +18,7 @@ public enum ParcelPriority {
         }
     }, SECOND {
         @Override
-        public String getPriority(ParcelHelper parcelDto) {
+        public String getPriority(ParcelDto parcelDto) {
             if (parcelDto.getWeight() > parcelDto.getHeavyParcel()) {
                 return ParcelPriority.SECOND.toString();
             } else {
@@ -28,7 +28,7 @@ public enum ParcelPriority {
         }
     }, THIRD {
         @Override
-        public String getPriority(ParcelHelper parcelDto) {
+        public String getPriority(ParcelDto parcelDto) {
             if (parcelDto.getVolume() < parcelDto.getSmallParcel()) {
                 return ParcelPriority.THIRD.toString();
             } else {
@@ -37,7 +37,7 @@ public enum ParcelPriority {
         }
     }, FOURTH {
         @Override
-        public String getPriority(ParcelHelper parcelDto) {
+        public String getPriority(ParcelDto parcelDto) {
             if (parcelDto.getVolume() >= parcelDto.getHeavyParcel() && parcelDto.getVolume() < parcelDto.getMediumParcel()) {
                 return ParcelPriority.FOURTH.toString();
             } else {
@@ -46,7 +46,7 @@ public enum ParcelPriority {
         }
     }, FIFTH {
         @Override
-        public String getPriority(ParcelHelper parcelDto) {
+        public String getPriority(ParcelDto parcelDto) {
             if (parcelDto.getVolume() >= parcelDto.getMediumParcel()) {
                 return ParcelPriority.FIFTH.toString();
             } else {
@@ -55,6 +55,6 @@ public enum ParcelPriority {
         }
     };
 
-    public abstract String getPriority(ParcelHelper parcelDto);
+    public abstract String getPriority(ParcelDto parcelDto);
 
 }

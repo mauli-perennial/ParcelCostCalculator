@@ -1,7 +1,7 @@
 package com.example.parceldeliveryapplication.serviceimpl;
 
 import com.example.parceldeliveryapplication.costcalculator.ParcelCostCalculator;
-import com.example.parceldeliveryapplication.helper.ParcelHelper;
+import com.example.parceldeliveryapplication.dto.ParcelDto;
 import com.example.parceldeliveryapplication.enums.ParcelPriority;
 import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import com.example.parceldeliveryapplication.exceptions.InvalidVoucherException;
@@ -45,7 +45,7 @@ class ParcelServiceImplTest {
     void parcelCostCalculatorTest() {
         Parcel parcel = new Parcel(10.0D, 10.0D, 10.0D, 10.0D);
         String voucher = "MYNT";
-        ParcelHelper parcelDto = new ParcelHelper(parcel.parcelVolume(), parcel.getWeight(), 50.0D, 1500.0D, 10.0D, 2500.0D);
+        ParcelDto parcelDto = new ParcelDto(parcel.parcelVolume(), parcel.getWeight(), 50.0D, 1500.0D, 10.0D, 2500.0D);
         ParcelPriority parcelPriority = ParcelPriority.THIRD;
         Mockito.when(parcelCostCalculator.getParcelCost(parcelPriority.toString(), parcel)).thenReturn(30.0D);
         Mockito.when(voucherService.getDiscount(voucher)).thenReturn(12.25D);
@@ -56,7 +56,7 @@ class ParcelServiceImplTest {
     void testInvalidParcelException() {
         Parcel parcelDTO = new Parcel(51.0D, 10.0D, 10.0D, 10.0D);
         String voucher = "MYNT";
-        ParcelPriority parcelPriority = ParcelPriority.THIRD;
+        ParcelPriority parcelPriority = ParcelPriority.FIRST;
         Mockito.when(parcelCostCalculator.getParcelCost(parcelPriority.toString(), parcelDTO)).thenThrow(InvalidParcelException.class);
         assertThrows(InvalidParcelException.class, () -> parcelService.parcelCostCalculator(parcelDTO, voucher));
     }
@@ -65,7 +65,7 @@ class ParcelServiceImplTest {
     void testInvalidVoucherException() {
         Parcel parcel = new Parcel(10.0D, 10.0D, 10.0D, 10.0D);
         String voucher = "djhd";
-        ParcelHelper parcelDto = new ParcelHelper(parcel.parcelVolume(), parcel.getWeight(), 50.0D, 1500.0D, 1500.0D, 2500.0D);
+        ParcelDto parcelDto = new ParcelDto(parcel.parcelVolume(), parcel.getWeight(), 50.0D, 1500.0D, 1500.0D, 2500.0D);
         Mockito.when(voucherService.getDiscount(voucher)).thenThrow(InvalidVoucherException.class);
         assertThrows(InvalidVoucherException.class, () -> parcelService.parcelCostCalculator(parcel, voucher));
     }
@@ -85,5 +85,11 @@ class ParcelServiceImplTest {
         Mockito.when(voucherService.getDiscount(voucher)).thenThrow(InvalidVoucherException.class);
         assertThrows(InvalidVoucherException.class, () -> parcelService.getDiscountOnVoucher(voucher));
 
+    }
+
+    @Test
+    void getVolume() {
+        Parcel parcel = new Parcel(10.0D, 10.0D, 10.0D, 10.0D);
+        assertEquals(1000.0D,parcelService.getVolume(parcel));
     }
 }

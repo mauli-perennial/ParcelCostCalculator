@@ -2,10 +2,9 @@ package com.example.parceldeliveryapplication.costcalculator;
 
 import com.example.parceldeliveryapplication.config.Constants;
 import com.example.parceldeliveryapplication.model.Parcel;
-import com.example.parceldeliveryapplication.enums.ParcelCostRuleType;
+import com.example.parceldeliveryapplication.enums.CostByParcelType;
 import com.example.parceldeliveryapplication.exceptions.InvalidParcelException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -23,10 +22,10 @@ public class ParcelCostCalculator {
     static {
         final Map<String, CostCalculator> costs = new HashMap<>();
         costs.put("FIRST", parcelDTO -> 0);
-        costs.put("SECOND", ParcelCostRuleType.HEAVY_PARCEL::calculateCost);
-        costs.put("THIRD", ParcelCostRuleType.SMALL_PARCEL::calculateCost);
-        costs.put("FOURTH", ParcelCostRuleType.MEDIUM_PARCEL::calculateCost);
-        costs.put("FIFTH", ParcelCostRuleType.LARGE_PARCEL::calculateCost);
+        costs.put("SECOND", CostByParcelType.HEAVY_PARCEL::calculateCost);
+        costs.put("THIRD", CostByParcelType.SMALL_PARCEL::calculateCost);
+        costs.put("FOURTH", CostByParcelType.MEDIUM_PARCEL::calculateCost);
+        costs.put("FIFTH", CostByParcelType.LARGE_PARCEL::calculateCost);
         COSTS = Collections.unmodifiableMap(costs);
     }
 
